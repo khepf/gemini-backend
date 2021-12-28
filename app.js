@@ -20,6 +20,7 @@ mongoose
   .catch((err) => {
     console.log("Houston we have a problem! " + err);
   });
+app.enable("trust proxy");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/images", express.static(__dirname + "/images"));
