@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
+const baseballCardsRoutes = require("./routes/baseballcards");
 
 const app = express();
 
@@ -12,7 +13,7 @@ mongoose
   .connect(
     "mongodb+srv://gemini:" +
       process.env.MONGO_ATLAS_PW +
-      "@gcsandboxcluster.wiugq.mongodb.net/baseballcards?retryWrites=true&w=majority"
+      "@gcsandboxcluster.wiugq.mongodb.net/geminidb?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to database!");
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/baseballcards", baseballCardsRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/user", userRoutes);
 
