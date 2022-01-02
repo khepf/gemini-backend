@@ -5,9 +5,11 @@ const User = require("../models/user");
 
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
+    console.log("req.body", req.body);
     const user = new User({
       email: req.body.email,
       password: hash,
+      role: req.body.role,
     });
     user
       .save()
@@ -45,7 +47,11 @@ exports.userLogin = (req, res, next) => {
         });
       }
       const token = jwt.sign(
-        { email: fetchedUser.email, userId: fetchedUser._id },
+        {
+          email: fetchedUser.email,
+          userId: fetchedUser._id,
+          role: fetchedUser.role,
+        },
         process.env.JWT_KEY,
         { expiresIn: "1h" }
       );

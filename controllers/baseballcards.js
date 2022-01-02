@@ -7,6 +7,7 @@ exports.createCard = (req, res, next) => {
     year: req.body.year,
     brand: req.body.brand,
     cardNumber: req.body.cardNumber,
+    grade: req.body.grade,
     creator: req.userData.userId,
   });
   baseballcard
@@ -35,6 +36,7 @@ exports.updateCard = (req, res, next) => {
     year: req.body.year,
     brand: req.body.brand,
     cardNumber: req.body.cardNumber,
+    grade: req.body.grade,
     creator: req.userData.userId,
   });
   BaseballCard.updateOne(

@@ -6,6 +6,7 @@ const baseballCardSchema = mongoose.Schema({
   year: { type: String, required: true },
   brand: { type: String, required: true },
   cardNumber: { type: String, required: true },
+  grade: { type: String, required: true },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
