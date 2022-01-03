@@ -8,6 +8,10 @@ exports.createCard = (req, res, next) => {
     brand: req.body.brand,
     cardNumber: req.body.cardNumber,
     grade: req.body.grade,
+    buyPrice: req.body.buyPrice,
+    sellPrice: req.body.sellPrice,
+    buyDate: req.body.buyDate,
+    sellDate: req.body.sellDate,
     creator: req.userData.userId,
   });
   baseballcard
@@ -22,8 +26,10 @@ exports.createCard = (req, res, next) => {
       });
     })
     .catch((error) => {
+      console.log(error);
       res.status(500).json({
         message: "Creating a Card failed!",
+        error: error,
       });
     });
 };
@@ -37,6 +43,10 @@ exports.updateCard = (req, res, next) => {
     brand: req.body.brand,
     cardNumber: req.body.cardNumber,
     grade: req.body.grade,
+    buyPrice: req.body.buyPrice,
+    sellPrice: req.body.sellPrice,
+    buyDate: req.body.buyDate,
+    sellDate: req.body.sellDate,
     creator: req.userData.userId,
   });
   BaseballCard.updateOne(

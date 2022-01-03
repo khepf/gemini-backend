@@ -7,6 +7,10 @@ const baseballCardSchema = mongoose.Schema({
   brand: { type: String, required: true },
   cardNumber: { type: String, required: true },
   grade: { type: String, required: true },
+  buyPrice: { type: String, required: true },
+  buyDate: { type: String, required: true },
+  sellPrice: { type: String, required: true },
+  sellDate: { type: String, required: true },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
