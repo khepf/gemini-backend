@@ -139,7 +139,6 @@ exports.updateUser = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
   User.deleteOne({ _id: req.params.id })
     .then((result) => {
-      console.log(result);
       if (result.deletedCount > 0) {
         res.status(200).json({ message: "Deletion successful!" });
       } else {

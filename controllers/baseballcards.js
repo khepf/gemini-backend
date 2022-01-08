@@ -68,9 +68,16 @@ exports.updateCard = (req, res, next) => {
 };
 
 exports.getCards = (req, res, next) => {
+  // BaseballCard.createIndex({ year: 1, brand: 1, cardNumber: 1 });
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
-  const cardQuery = BaseballCard.find();
+
+  const cardQuery = BaseballCard.find().sort({
+    year: 1,
+    brand: 1,
+    cardNumber: 1,
+  });
+
   let fetchedCards;
   if (pageSize && currentPage) {
     cardQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);

@@ -100,7 +100,6 @@ exports.getPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
     .then((result) => {
-      console.log(result);
       if (result.deletedCount > 0) {
         res.status(200).json({ message: "Deletion successful!" });
       } else {
@@ -111,5 +110,14 @@ exports.deletePost = (req, res, next) => {
       res.status(500).json({
         message: "Deleting posts failed!",
       });
+    });
+};
+
+exports.filterTitle = (req, res, next) => {
+  Post.find({ title: { $regex: "^" + req.body, $options: "i" } })
+    .exec(callback)
+    .then((result) => {
+      console.log("filter result", result);
+      // res.status(200).json({ filteredResult: result });
     });
 };
