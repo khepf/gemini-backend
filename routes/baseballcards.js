@@ -17,4 +17,6 @@ router.get("/:id", BaseballCardController.getCard);
 
 router.delete("/:id", checkAuth, BaseballCardController.deleteCard);
 
+router.post("/cardfilter", BaseballCardController.filterCards);
+
 module.exports = router;

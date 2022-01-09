@@ -132,3 +132,17 @@ exports.deleteCard = (req, res, next) => {
       });
     });
 };
+
+exports.filterCards = (req, res, next) => {
+  console.log("req.body", req.body);
+  BaseballCard.find({ year: req.body.filter })
+    .then((result) => {
+      console.log("filter result", result);
+      res.status(200).json({ message: "success!" });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "fail!",
+      });
+    });
+};
