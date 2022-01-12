@@ -29,45 +29,39 @@ exports.createUser = (req, res, next) => {
   });
 };
 
-exports.userLogin = (req, res, next) => {
-  let fetchedUser;
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (!user) {
-        return res.status(401).json({
-          message: "Auth failed",
-        });
-      }
-      fetchedUser = user;
-      return bcrypt.compare(req.body.password, user.password);
-    })
-    .then((result) => {
-      if (!result) {
-        return res.status(401).json({
-          message: "Auth failed",
-        });
-      }
-      const token = jwt.sign(
-        {
-          email: fetchedUser.email,
-          userId: fetchedUser._id,
-          role: fetchedUser.role,
-        },
-        process.env.JWT_KEY,
-        { expiresIn: "1h" }
-      );
-      res.status(200).json({
-        token: token,
-        expiresIn: 3600,
-        userId: fetchedUser._id,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(401).json({
-        message: "Invalid authentication credentials!",
-      });
+exports.userLogin = async (req, res, next) => {
+  try {
+    const checkUserEmail = await User.findOne({ email: req.body.email });
+    // console.log("checkUserEmail", checkUserEmail);
+    if (!checkUserEmail) {
+      throw "Bad Email";
+    }
+    const checkUserPassword = await bcrypt.compare(
+      req.body.password,
+      checkUserEmail.password
+    );
+    console.log("checkUserPassword", checkUserPassword);
+    if (!checkUserPassword) {
+      throw "Bad Password";
+    }
+    const token = jwt.sign(
+      {
+        email: checkUserEmail.email,
+        userId: checkUserEmail._id,
+        role: checkUserEmail.role,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({
+      token: token,
+      expiresIn: 3600,
+      userId: checkUserEmail._id,
     });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(401).send({ error: error });
+  }
 };
 
 exports.getUsers = (req, res, next) => {

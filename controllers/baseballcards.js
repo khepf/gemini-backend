@@ -71,8 +71,9 @@ exports.getCards = (req, res, next) => {
   // BaseballCard.createIndex({ year: 1, brand: 1, cardNumber: 1 });
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
+  const userId = req.query.userId;
 
-  const cardQuery = BaseballCard.find().sort({
+  const cardQuery = BaseballCard.find({ creator: userId }).sort({
     year: 1,
     brand: 1,
     cardNumber: 1,
@@ -85,7 +86,7 @@ exports.getCards = (req, res, next) => {
   cardQuery
     .then((documents) => {
       fetchedCards = documents;
-      return BaseballCard.count();
+      return BaseballCard.count({ creator: userId });
     })
     .then((count) => {
       res.status(200).json({
