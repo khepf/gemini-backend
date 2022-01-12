@@ -72,6 +72,7 @@ exports.getCards = (req, res, next) => {
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const userId = req.query.userId;
+  console.log("userId from getCards", userId);
 
   const cardQuery = BaseballCard.find({ creator: userId }).sort({
     year: 1,
