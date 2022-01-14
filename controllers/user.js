@@ -57,6 +57,7 @@ exports.userLogin = async (req, res, next) => {
       token: token,
       expiresIn: 3600,
       userId: checkUserEmail._id,
+      userRole: checkUserEmail.role,
     });
   } catch (error) {
     console.log("error", error);
