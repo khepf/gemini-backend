@@ -32,7 +32,6 @@ exports.createUser = (req, res, next) => {
 exports.userLogin = async (req, res, next) => {
   try {
     const checkUserEmail = await User.findOne({ email: req.body.email });
-    // console.log("checkUserEmail", checkUserEmail);
     if (!checkUserEmail) {
       throw "Bad Email";
     }

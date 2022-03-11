@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
 const baseballCardsRoutes = require("./routes/baseballcards");
+// require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
 
 const app = express();
 
