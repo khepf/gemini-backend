@@ -68,11 +68,9 @@ exports.updateCard = (req, res, next) => {
 };
 
 exports.getCards = (req, res, next) => {
-  // BaseballCard.createIndex({ year: 1, brand: 1, cardNumber: 1 });
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const userId = req.query.userId;
-  console.log("userId from getCards", userId);
 
   const cardQuery = BaseballCard.find({ creator: userId }).sort({
     year: 1,
@@ -139,16 +137,24 @@ exports.filterCards = (req, res, next) => {
   var query;
   if (typeof req.body.filter === 'number') {
     
-    query = {$or:
-      [ { year: +req.body.filter }
-      ]};
+    query = {$and: [
+      {$or:
+        [ { year: +req.body.filter }
+        ]},
+      {creator: req.body.userId}
+  ]};
   } else {
     
-    query = {$or:
-      [ {lastName: {$regex: req.body.filter, $options: 'i'}},
-        {firstName:{$regex: req.body.filter, $options: 'i'}},
-      ]};
+    query = {$and: [
+      {$or:
+        [ {lastName: {$regex: req.body.filter, $options: 'i'}},
+          {firstName:{$regex: req.body.filter, $options: 'i'}},
+        ]},
+      {creator: req.body.userId}
+  ]}
   }
+
+  
   
   
   BaseballCard.find(query)
@@ -168,22 +174,4 @@ exports.filterCards = (req, res, next) => {
     });
 };
 
-// exports.filterCards = (req, res, next) => {
-//   console.log("req.body", req.body);
-//   BaseballCard.find({ year: req.body.filter })
-//     .then((result) => {
-//       const count = result.length;
-//       console.log("filter result", result);
-//       res.status(200).json({ 
-//         message: "success!",
-//         result: result,
-//         count: count
-//        });
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         message: "fail!",
-//         error: error
-//       });
-//     });
-// };
+
