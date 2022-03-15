@@ -136,9 +136,21 @@ exports.deleteCard = (req, res, next) => {
 };
 
 exports.filterCards = (req, res, next) => {
+  var query;
+  if (typeof req.body.filter === 'number') {
+    
+    query = {$or:
+      [ { year: +req.body.filter }
+      ]};
+  } else {
+    
+    query = {$or:
+      [ {lastName: {$regex: req.body.filter, $options: 'i'}},
+        {firstName:{$regex: req.body.filter, $options: 'i'}},
+      ]};
+  }
   
-  var query = {$or:[ {lastName:{$regex: req.body.filter, $options: 'i'}},{firstName:{$regex: req.body.filter, $options: 'i'}}
-  ]};
+  
   BaseballCard.find(query)
     .then((result) => {
       const count = result.length;
