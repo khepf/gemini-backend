@@ -1,6 +1,16 @@
 const BaseballCard = require("../models/baseballcard");
+require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 exports.createCard = (req, res, next) => {
+  console.log('req.body', req.body);
+  console.log('req.file', req.file);
   const baseballcard = new BaseballCard({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -12,6 +22,8 @@ exports.createCard = (req, res, next) => {
     sellPrice: req.body.sellPrice,
     buyDate: req.body.buyDate,
     sellDate: req.body.sellDate,
+    imagePath: req.file.path,
+    imageId: req.file.filename,
     creator: req.userData.userId,
   });
   baseballcard
@@ -120,8 +132,14 @@ exports.getCard = (req, res, next) => {
 exports.deleteCard = (req, res, next) => {
   BaseballCard.deleteOne({ _id: req.params.id, creator: req.userData.userId })
     .then((result) => {
+      console.log('req.queryyy', req.query);
+      console.log('req.paramssss', req.params);
       if (result.deletedCount > 0) {
-        res.status(200).json({ message: "Deletion successful!" });
+        // console.log('hi', req.file);
+        cloudinary.uploader.destroy(req.query.imageId, function (error, result) {
+          // console.log('public id', req.file);
+          res.status(200).json({ message: "Deletion successful!", result: result });
+        });
       } else {
         res.status(401).json({ message: "Not authorized!" });
       }
@@ -129,6 +147,7 @@ exports.deleteCard = (req, res, next) => {
     .catch((error) => {
       res.status(500).json({
         message: "Deleting Cards Failed!",
+        error: error
       });
     });
 };

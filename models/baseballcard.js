@@ -11,6 +11,8 @@ const baseballCardSchema = mongoose.Schema({
   buyDate: { type: String },
   sellPrice: { type: String },
   sellDate: { type: String },
+  imagePath: { type: String },
+  imageId: { type: String },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

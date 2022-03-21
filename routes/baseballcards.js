@@ -4,10 +4,11 @@ const BaseballCardController = require("../controllers/baseballcards");
 
 const checkAuth = require("../middleware/check-auth");
 const extractFile = require("../middleware/file");
+const upload = require("../middleware/multer");
 
 const router = express.Router();
 
-router.post("", checkAuth, extractFile, BaseballCardController.createCard);
+router.post("", checkAuth, upload.single("imageFront"), BaseballCardController.createCard);
 
 router.put("/:id", checkAuth, extractFile, BaseballCardController.updateCard);
 
