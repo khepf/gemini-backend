@@ -132,8 +132,8 @@ exports.getCard = (req, res, next) => {
 exports.deleteCard = (req, res, next) => {
   BaseballCard.deleteOne({ _id: req.params.id, creator: req.userData.userId })
     .then((result) => {
-      console.log('req.queryyy', req.query);
-      console.log('req.paramssss', req.params);
+      console.log('req.queryy', req.query);
+      console.log('req.paramss', req.params);
       if (result.deletedCount > 0) {
         // console.log('hi', req.file);
         cloudinary.uploader.destroy(req.query.imageId, function (error, result) {
